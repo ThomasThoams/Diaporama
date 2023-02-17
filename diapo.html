@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+     
+        const container = document.getElementById('root');
+        const imgs = ['img1.webp', 'img2.webp', 'img3.webp'];
+
+        const Diapo = ({timing}) => {
+            const [count, setCount] = React.useState(0); 
+            const [play, setPlay] = React.useState(true);
+            //const [timer, setTimer] = React.useState(null);
+            let timer = null;
+            console.log(timer);
+
+            const previous = () => {
+                clearTimeout(timer);
+
+                if(count == 0){
+                    setCount(imgs.length -1);
+                }
+                else{
+                    setCount(count-1)
+                }
+            }
+
+            const next = () => {
+
+                clearTimeout(timer);
+            
+                if(count >= imgs.length - 1){
+                    setCount(0)
+                }
+                else{
+                    setCount(count+1)
+                }
+            }
+
+            const playPause = () => {
+                
+                if(play)
+                {
+                    clearTimeout(timer);
+                }
+                
+                setPlay(!play);
+            }
+
+            if(play){
+                timer = setTimeout(function(){
+                    next();
+                   
+                }, timing)
+            }
+            
+
+            return (
+                <div>
+                    <button onClick={previous}>{"<"}</button>
+                    <img onMouseOver={playPause} onMouseOut={playPause} src={"img/"+imgs[count]} />
+                    <button onClick={next}>{">"}</button>
+                </div>
+            )
+        } 
+       
+        ReactDOM.render(
+            <Diapo timing={5000} />,
+            container
+        );
+    </script>
+</body>
+</html>
